@@ -1,0 +1,207 @@
+<% layout('layouts/boilerplate')%>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f0f0f0;
+    }
+
+    h1 {
+        text-align: center;
+        padding: 20px;
+        background-color: #007bff;
+        color: white;
+    }
+
+    form {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    button#getSuggestionsButton {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    button#getSuggestionsButton:hover {
+        background-color: #0056b3;
+    }
+
+    #suggestions {
+        margin: 20px;
+        padding: 10px;
+        background-color: white;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    ul {
+        list-style-type: disc;
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 10px;
+    }
+
+    h2 {
+        color: #007bff;
+    }
+</style>
+    <h1>Medical Camp Improvement Suggestions</h1>
+
+    <form id="suggestionForm">
+        <button type="button" id="getSuggestionsButton">Get 5 Suggestions</button>
+    </form>
+
+    <div id="suggestions"></div>
+    <script>
+        // Array of predefined medical camp improvement suggestions
+        const suggestions = [
+    "Increase the number of medical staff.",
+    "Provide more medical supplies and equipment.",
+    "Enhance the communication and coordination among the medical team.",
+    "Offer educational workshops for camp attendees.",
+    "Implement a better registration process.",
+    "Improve the sanitation and hygiene at the campsite.",
+    "Increase awareness about the camp in the community.",
+    "Enhance the safety measures and emergency response.",
+    "Ensure proper medical record keeping.",
+    "Optimize the layout and organization of the campsite.",
+    "Recruit volunteers to assist with camp operations.",
+    "Expand the range of medical services offered.",
+    "Implement a feedback system for camp attendees.",
+    "Promote the camp through social media and local media outlets.",
+    "Collaborate with local healthcare organizations.",
+    "Provide transportation options for camp attendees.",
+    "Train staff in cultural sensitivity and diversity.",
+    "Ensure accessibility for individuals with disabilities.",
+    "Conduct regular safety drills and simulations.",
+    "Create a dedicated area for children at the camp.",
+    "Implement a system for managing medical waste.",
+    "Provide mental health support services.",
+    "Establish a code of conduct for camp attendees.",
+    "Enhance the camp's medical equipment maintenance.",
+    "Offer on-site counseling services.",
+    "Provide nutritional guidance and support.",
+    "Collaborate with local schools for health education.",
+    "Expand partnerships with community organizations.",
+    "Implement a triage system for efficient care.",
+    "Ensure proper disposal of medical sharps.",
+    "Promote a culture of inclusivity and respect.",
+    "Conduct regular staff training and development.",
+    "Create a volunteer recognition program.",
+    "Enhance the camp's emergency response plan.",
+    "Provide language interpretation services.",
+    "Implement a camp-wide health assessment program.",
+    "Establish a patient follow-up system.",
+    "Optimize the camp's scheduling and appointments.",
+    "Promote physical fitness and wellness at the camp.",
+    "Create a welcoming and comfortable environment.",
+    "Offer specialized medical clinics.",
+    "Implement a medical inventory management system.",
+    "Provide access to clean drinking water.",
+    "Collaborate with local businesses for support.",
+    "Enhance the camp's security measures.",
+    "Offer health screenings and check-ups.",
+    "Establish a mobile medical unit for outreach.",
+    "Promote community engagement and participation.",
+    "Create a system for tracking patient outcomes.",
+    "Provide mental health first aid training.",
+    "Enhance the camp's technology infrastructure.",
+    "Implement a patient feedback and satisfaction survey.",
+    "Ensure compliance with medical regulations.",
+    "Offer telemedicine services for remote areas.",
+    "Collaborate with government health agencies.",
+    "Promote preventive healthcare education.",
+    "Create a disaster preparedness plan.",
+    "Implement a medication management system.",
+    "Provide hygiene and sanitation kits.",
+    "Establish partnerships with local universities.",
+    "Optimize the camp's medical documentation.",
+    "Promote healthy lifestyle choices.",
+    "Enhance medical staff communication tools.",
+    "Offer immunization and vaccination clinics.",
+    "Provide mobile dental services.",
+    "Collaborate with local farmers for fresh food.",
+    "Implement a patient privacy policy.",
+    "Ensure access to medical specialists.",
+    "Create a health promotion campaign.",
+    "Offer transportation subsidies for attendees.",
+    "Establish a medical research program.",
+    "Optimize the camp's logistical operations.",
+    "Promote mental health awareness.",
+    "Enhance the camp's medical records system.",
+    "Provide telehealth consultations.",
+    "Collaborate with humanitarian organizations.",
+    "Implement a health equity initiative.",
+    "Ensure access to medical interpreters.",
+    "Create partnerships with faith-based groups.",
+    "Offer addiction recovery services.",
+    "Establish a disaster response team.",
+    "Optimize the camp's supply chain management.",
+    "Promote healthy eating habits.",
+    "Enhance medical staff training programs.",
+    "Provide preventive dental care.",
+    "Collaborate with local pharmacies.",
+    "Implement a patient education program.",
+    "Ensure access to specialist referrals.",
+    "Create a public awareness campaign.",
+    "Offer mental health support hotlines.",
+    "Establish partnerships with research institutions.",
+    "Optimize the camp's data security measures.",
+    "Promote community health initiatives.",
+    "Enhance the camp's medical billing process.",
+    "Provide dental hygiene kits.",
+    "Collaborate with healthcare volunteers.",
+    "Implement a health literacy program.",
+    "Ensure access to diagnostic testing.",
+    "Create a healthcare advocacy network.",
+    "Offer childcare services for attendees.",
+    "Establish a medical ethics committee.",
+    "Optimize the camp's waste disposal practices.",
+    "Promote smoking cessation programs.",
+    "Enhance medical equipment procurement.",
+    "Provide vision and eye care services.",
+    "Collaborate with local youth organizations.",
+    "Implement a patient support network.",
+    "Ensure access to medical transport services.",
+    "Create a health promotion website.",
+    "Offer mobile healthcare clinics.",
+    "Establish partnerships with NGOs.",
+    "Optimize the camp's medical software systems.",
+    "Promote vaccination awareness campaigns.",
+    "Enhance medical equipment sterilization.",
+    "Provide mental health education workshops.",
+    "Collaborate with indigenous communities.",
+    "Implement a patient advocacy program.",
+    "Ensure access to medical insurance options."
+];
+        // Function to get an array of random suggestions
+        function getRandomSuggestions(count) {
+            const randomSuggestions = [];
+            while (randomSuggestions.length < count && suggestions.length > 0) {
+                const randomIndex = Math.floor(Math.random() * suggestions.length);
+                randomSuggestions.push(suggestions.splice(randomIndex, 1)[0]);
+            }
+            return randomSuggestions;
+        }
+
+        // Handle button click to get suggestions
+        document.getElementById('getSuggestionsButton').addEventListener('click', function() {
+            const randomSuggestions = getRandomSuggestions(5);
+            const suggestionsDiv = document.getElementById('suggestions');
+            suggestionsDiv.innerHTML = "<h2>5 Suggestions:</h2><ul>";
+            randomSuggestions.forEach(suggestion => {
+                suggestionsDiv.innerHTML += `<li>${suggestion}</li>`;
+            });
+            suggestionsDiv.innerHTML += "</ul>";
+        });
+    </script>
+</body>
+</html>

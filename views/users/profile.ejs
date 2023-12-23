@@ -1,0 +1,48 @@
+<% layout('layouts/boilerplate') %>
+<div class="container mt-4">
+  <div class="card">
+    <div class="card-body text-center">
+      <h1 class="card-title">User Profile</h1>
+      <p class="card-text">Session Expiration: <%= expirationTime %></p>
+      <p class="<%= averageRating === 0 ? 'text-danger font-weight-bold' : '' %>">
+        <strong>Average Rating of Reviews:</strong>
+        <%= averageRating === 0 ? "You have no camps open/ Received No rating." : averageRating %>
+      </p>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-md-4">
+      <div class="card">
+        <% console.log(currentUser, " coming from profile") %>
+        <img src="/images/<%=currentUser.profilePic%>" alt="Profile Image" class="card-img-top">
+        <div class="card-body">
+          <h2 class="card-title text-center">
+            <%= currentUser.username %>
+            <% if (userRating >= 4.5) { %>
+              <sup class="text-muted">elite</sup>
+            <% } %>
+          </h2>
+          <ul class="list-unstyled">
+            <li><strong>User ID:</strong> <%= currentUser._id %></li>
+            <li><strong>Email:</strong> <%= currentUser.email %></li>
+            <li><strong>Version:</strong> <%= currentUser.__v %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-body text-center">
+          <h3 class="card-title">Review Frequency</h3>
+          <img class="img-fluid" src="<%= chartURL[0] %>" alt="Review Frequency Chart">
+        </div>
+      </div>
+      <div class="card mt-4">
+        <div class="card-body text-center">
+          <h3 class="card-title">Review Body Sentiment Analysis</h3>
+          <img class="img-fluid" src="<%= chartURL[1] %>" alt="Sentiment Analysis Chart">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
